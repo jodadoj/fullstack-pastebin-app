@@ -33,6 +33,15 @@ app.get("/health-check", async (req, res) => {
   }
 });
 
+app.get("/pastes", async (req, res) => {
+  const pasteList = await client.query('select * from paste_bin'); // await client.query('select "id", "name", "text" from paste_bin');
+  res.status(200).json(pasteList);
+  // app.get("/pastes", (req, res) => {
+  //   const allSignatures = getAllDbItems();
+  //   res.status(200).json(allSignatures);
+  // });
+});
+
 connectToDBAndStartListening();
 
 async function connectToDBAndStartListening() {
