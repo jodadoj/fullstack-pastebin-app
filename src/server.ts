@@ -16,7 +16,6 @@ const app = express();
 app.use(express.json()); //add JSON body parser to each following route handler
 app.use(cors()); //add CORS support to each following route handler
 
-
 app.get("/", async (req, res) => {
   res.json({ msg: "Hello! There's nothing interesting for GET /" });
 });
@@ -34,7 +33,7 @@ app.get("/health-check", async (req, res) => {
 });
 
 app.get("/pastes", async (req, res) => {
-  const pasteList = await client.query('select * from paste_bin'); // await client.query('select "id", "name", "text" from paste_bin');
+  const pasteList = await client.query("select * from paste_bin"); // await client.query('select "id", "name", "text" from paste_bin');
   res.status(200).json(pasteList);
   // app.get("/pastes", (req, res) => {
   //   const allSignatures = getAllDbItems();
