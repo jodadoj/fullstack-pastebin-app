@@ -41,6 +41,19 @@ app.get("/pastes", async (req, res) => {
   // });
 });
 
+app.post("/paste", async (req, res) => {
+  // to be rigorous, ought to handle non-conforming request bodies
+  // ... but omitting this as a simplification
+  const newPasteName = req.body.name;
+  const newPasteText = req.body.text;
+  const text = "INSERT INTO paste_bin(name, text) VALUES($1, $2) RETURNING *";
+  const values = [newPasteName, newPasteText];
+
+  const postData = await client.query(text, values);
+
+  res.status(201).json(postData);
+});
+
 connectToDBAndStartListening();
 
 async function connectToDBAndStartListening() {
