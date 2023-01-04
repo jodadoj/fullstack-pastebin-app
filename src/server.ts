@@ -54,7 +54,6 @@ app.post("/paste", async (req, res) => {
   res.status(201).json(postData);
 });
 
-
 // DELETE /signatures/:id
 // app.delete<{ id: string }>("/signatures/:id", (req, res) => {
 //   const matchingSignature = deleteGuestbookSignatureById(
@@ -72,7 +71,6 @@ app.delete("/delete", async (req, res) => {
   await client.query("delete from paste_bin");
   res.status(200);
 });
-
 
 connectToDBAndStartListening();
 
