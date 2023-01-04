@@ -68,8 +68,14 @@ app.post("/paste", async (req, res) => {
 
 //--------------------------------------------------------------------------------Deletes all pastes from table leaving empty table
 app.delete("/delete", async (req, res) => {
-  await client.query("delete from paste_bin");
-  res.status(200);
+  try {
+    await client.query("delete from paste_bin");
+    res.status(200).send("Deleted all!");
+  } catch (error) {
+    //Recover from error rather than letting system halt
+    console.error(error);
+    res.status(500).send("An error occurred. Check server logs.");
+  }
 });
 
 connectToDBAndStartListening();
