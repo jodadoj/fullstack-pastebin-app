@@ -70,6 +70,7 @@ app.post("/paste", async (req, res) => {
 //--------------------------------------------------------------------------------Deletes all pastes from table leaving empty table
 app.delete("/delete", async (req, res) => {
   await client.query("delete from paste_bin");
+  res.status(200);
 });
 
 
