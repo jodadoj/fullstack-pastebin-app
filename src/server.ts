@@ -54,22 +54,16 @@ app.post("/paste", async (req, res) => {
   res.status(201).json(postData);
 });
 
-// DELETE /signatures/:id
-// app.delete<{ id: string }>("/signatures/:id", (req, res) => {
-//   const matchingSignature = deleteGuestbookSignatureById(
-//     parseInt(req.params.id)
-//   );
-//   if (matchingSignature === "not found") {
-//     res.status(404).json(matchingSignature);
-//   } else {
-//     res.status(200).json(matchingSignature);
-//   }
-// });
-
 //--------------------------------------------------------------------------------Deletes all pastes from table leaving empty table
 app.delete("/delete", async (req, res) => {
-  await client.query("delete from paste_bin");
-  res.status(200);
+  try {
+    await client.query("delete from paste_bin");
+    res.status(200).send("Deleted all!");
+  } catch (error) {
+    //Recover from error rather than letting system halt
+    console.error(error);
+    res.status(500).send("An error occurred. Check server logs.");
+  }
 });
 
 connectToDBAndStartListening();
