@@ -87,7 +87,7 @@ app.post("/comment", async (req, res) => {
 //--------------------------------------------------------------------------------gets comments from comment table
 app.get("/comments", async (req, res) => {
   const commentList = await client.query(
-    "SELECT * FROM comments ORDER BY comment_id DESC LIMIT 10"
+    "SELECT * FROM comments ORDER BY comment_id DESC"
   ); // await client.query('select "id", "name", "text" from paste_bin');
   res.status(200).json(commentList);
   // app.get("/pastes", (req, res) => {
