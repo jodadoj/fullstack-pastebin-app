@@ -33,7 +33,7 @@ app.get("/health-check", async (req, res) => {
 });
 
 app.get("/pastes", async (req, res) => {
-  const pasteList = await client.query("select * from paste_bin"); // await client.query('select "id", "name", "text" from paste_bin');
+  const pasteList = await client.query("SELECT * FROM paste_bin ORDER BY id DESC LIMIT 10"); // await client.query('select "id", "name", "text" from paste_bin');
   res.status(200).json(pasteList);
   // app.get("/pastes", (req, res) => {
   //   const allSignatures = getAllDbItems();
