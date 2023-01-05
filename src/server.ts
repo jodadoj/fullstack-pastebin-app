@@ -57,7 +57,9 @@ app.post("/paste", async (req, res) => {
 //--------------------------------------------------------------------------------Deletes all pastes from table leaving empty table
 app.delete("/delete", async (req, res) => {
   try {
-    await client.query("delete from paste_bin");
+    await client.query("DELETE FROM comments");
+    await client.query("DELETE FROM paste_bin");
+
     res.status(200).send("Deleted all!");
   } catch (error) {
     //Recover from error rather than letting system halt
@@ -88,6 +90,7 @@ app.get("/comments", async (req, res) => {
   //   res.status(200).json(allSignatures);
   // });
 });
+
 
 
 //--------------------------------------------------------------------------------Connecting to database
