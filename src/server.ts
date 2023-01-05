@@ -65,7 +65,32 @@ app.delete("/delete", async (req, res) => {
     res.status(500).send("An error occurred. Check server logs.");
   }
 });
+//--------------------------------------------------------------------------------Adds new comment to comment table
+app.post("/comment", async (req, res) => {
+  // to be rigorous, ought to handle non-conforming request bodies
+  // ... but omitting this as a simplification
+  const pasteId = req.body.paste_id
+  const newCommentName = req.body.name;
+  const newComment = req.body.comment;
+  const text = "INSERT INTO comments(paste_id,name, comment) VALUES($1, $2, $3) RETURNING *";
+  const values = [pasteId, newCommentName, newComment];
 
+  const postData = await client.query(text, values);
+
+  res.status(201).json(postData);
+});
+//--------------------------------------------------------------------------------gets comments from comment table
+app.get("/comments", async (req, res) => {
+  const commentList = await client.query("SELECT * FROM comments ORDER BY comment_id DESC LIMIT 10"); // await client.query('select "id", "name", "text" from paste_bin');
+  res.status(200).json(commentList);
+  // app.get("/pastes", (req, res) => {
+  //   const allSignatures = getAllDbItems();
+  //   res.status(200).json(allSignatures);
+  // });
+});
+
+
+//--------------------------------------------------------------------------------Connecting to database
 connectToDBAndStartListening();
 
 async function connectToDBAndStartListening() {
