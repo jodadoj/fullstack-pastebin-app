@@ -5,12 +5,13 @@ import { Client } from "pg";
 import { getEnvVarOrFail } from "./support/envVarUtils";
 import { setupDBClientConfig } from "./support/setupDBClientConfig";
 
-dotenv.config(); //Read .env file lines as though they were env vars.
+//--------------------------------------------------------------------------------Read .env file lines as though they were env vars.
+dotenv.config(); 
 
 const dbClientConfig = setupDBClientConfig();
 const client = new Client(dbClientConfig);
 
-//Configure express routes
+//--------------------------------------------------------------------------------Configure express routes
 const app = express();
 
 app.use(express.json()); //add JSON body parser to each following route handler
@@ -31,21 +32,16 @@ app.get("/health-check", async (req, res) => {
     res.status(500).send("An error occurred. Check server logs.");
   }
 });
-
+//--------------------------------------------------------------------------------Gets all pastes from database
 app.get("/pastes", async (req, res) => {
   const pasteList = await client.query(
     "SELECT * FROM paste_bin ORDER BY id DESC LIMIT 10"
-  ); // await client.query('select "id", "name", "text" from paste_bin');
+  );
   res.status(200).json(pasteList);
-  // app.get("/pastes", (req, res) => {
-  //   const allSignatures = getAllDbItems();
-  //   res.status(200).json(allSignatures);
-  // });
 });
-
+//--------------------------------------------------------------------------------Posts a new paste and adds it to database
 app.post("/paste", async (req, res) => {
-  // to be rigorous, ought to handle non-conforming request bodies
-  // ... but omitting this as a simplification
+
   const newPasteName = req.body.name;
   const newPasteText = req.body.text;
   const text = "INSERT INTO paste_bin(name, text) VALUES($1, $2) RETURNING *";
@@ -56,7 +52,7 @@ app.post("/paste", async (req, res) => {
   res.status(201).json(postData);
 });
 
-//--------------------------------------------------------------------------------Deletes all pastes from table leaving empty table
+//--------------------------------------------------------------------------------Deletes all data from database
 app.delete("/delete", async (req, res) => {
   try {
     await client.query("DELETE FROM comments");
